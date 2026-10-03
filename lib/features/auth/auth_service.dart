@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../core/errors/error_handler.dart';
 import '../../../core/validators/auth_validator.dart';
-import '../models/auth_result.dart';
+import 'models/auth_result.dart';
 
 class AuthService {
   final GoTrueClient _auth;
