@@ -10,8 +10,12 @@ import 'package:uuid/uuid.dart';
 class DataNotes {
   final supa = Supabase.instance.client;
 
-  // CREATE
-  Future<Result<void>> create(String title, String content) {
+  // CREATE  (now accepts an optional image path)
+  Future<Result<void>> create(
+    String title,
+    String content, {
+    String? imagePath,
+  }) {
     return safeCall<void>(() async {
       final user = supa.auth.currentUser;
 
@@ -22,12 +26,13 @@ class DataNotes {
       await supa.from('notes').insert({
         'title': title,
         'content': content,
+        'image_path': imagePath,
         'user_id': user.id,
       });
     });
   }
 
-  // READ
+  // READ  (newest first)
   Future<Result<List<Map<String, dynamic>>>> read() {
     return safeCall<List<Map<String, dynamic>>>(() async {
       final user = supa.auth.currentUser;
@@ -36,14 +41,23 @@ class DataNotes {
         throw const AppException('Please log in first.');
       }
 
-      final notes = await supa.from('notes').select().eq('user_id', user.id);
+      final notes = await supa
+          .from('notes')
+          .select()
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
 
       return notes;
     });
   }
 
-  // UPDATE
-  Future<Result<void>> update(String id, String title, String content) {
+  // UPDATE  (pass imagePath = null to remove the image)
+  Future<Result<void>> update(
+    String id,
+    String title,
+    String content, {
+    String? imagePath,
+  }) {
     return safeCall<void>(() async {
       final user = supa.auth.currentUser;
 
@@ -53,7 +67,11 @@ class DataNotes {
 
       await supa
           .from('notes')
-          .update({'title': title, 'content': content})
+          .update({
+            'title': title,
+            'content': content,
+            'image_path': imagePath,
+          })
           .eq('id', id)
           .eq('user_id', user.id);
     });
@@ -89,6 +107,13 @@ class DataNotes {
       await supa.storage.from('notes').upload(path, file);
 
       return path;
+    });
+  }
+
+  // DELETE IMAGE (new: cleans up storage when a note/image is removed)
+  Future<Result<void>> deleteImage(String imagePath) {
+    return safeCall<void>(() async {
+      await supa.storage.from('notes').remove([imagePath]);
     });
   }
 
