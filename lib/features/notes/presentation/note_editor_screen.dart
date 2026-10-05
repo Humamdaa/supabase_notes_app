@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../features/data/note/note_service.dart';
+import '../../data/note/note_service.dart';
 import '../../../widgets/auth_widgets.dart';
 import '../../../widgets/note_helper.dart';
 

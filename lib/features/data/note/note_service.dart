@@ -36,7 +36,7 @@ class DataNotes {
   Future<Result<List<Map<String, dynamic>>>> read() {
     return safeCall<List<Map<String, dynamic>>>(() async {
       final user = supa.auth.currentUser;
-
+   
       if (user == null) {
         throw const AppException('Please log in first.');
       }
@@ -67,11 +67,7 @@ class DataNotes {
 
       await supa
           .from('notes')
-          .update({
-            'title': title,
-            'content': content,
-            'image_path': imagePath,
-          })
+          .update({'title': title, 'content': content, 'image_path': imagePath})
           .eq('id', id)
           .eq('user_id', user.id);
     });

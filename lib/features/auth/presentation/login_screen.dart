@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'register_screen.dart';
 import '../auth_service.dart';
 import '../../../widgets/auth_widgets.dart';
+import '../../notes/presentation/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,7 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (result.success) {
       showAuthSnackBar(context, 'Logged in successfully!');
-
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
       // TODO: Navigate to NotesScreen.
     } else {
       showAuthSnackBar(context, result.message, isError: true);

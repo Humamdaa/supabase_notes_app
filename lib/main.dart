@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/features/data/note/note_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:myapp/features/auth/auth_service.dart';
 import 'package:myapp/features/auth/presentation/login_screen.dart';
 
 void main() async {

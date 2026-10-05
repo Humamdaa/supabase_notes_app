@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/features/auth/presentation/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../features/data/note/note_service.dart';
+import '../../data/note/note_service.dart';
 import '../../../widgets/note_helper.dart';
 
 import 'note_detail_screen.dart';
@@ -39,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final result = await _data.read();
 
+    debugPrint('READ SUCCESS: ${result.isSuccess}');
+    debugPrint('READ DATA: ${result.data}');
+    debugPrint('READ ERROR: ${result.error}');
     if (!mounted) return;
 
     setState(() {

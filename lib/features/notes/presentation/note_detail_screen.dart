@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../features/data/note/note_service.dart';
+import '../../data/note/note_service.dart';
 import '../../../widgets/note_helper.dart';
 import 'note_editor_screen.dart';
 
