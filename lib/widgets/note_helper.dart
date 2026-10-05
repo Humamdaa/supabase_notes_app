@@ -43,7 +43,7 @@ Future<bool> confirmAndDeleteNote(
 
   final result = await data.delete(note['id'].toString());
 
-  if (result.success) {
+  if (result.isSuccess) {
     final imagePath = note['image_path'] as String?;
     if (imagePath != null && imagePath.isNotEmpty) {
       await data.deleteImage(imagePath); // best effort
@@ -53,12 +53,14 @@ Future<bool> confirmAndDeleteNote(
   if (context.mounted) {
     showAuthSnackBar(
       context,
-      result.success ? 'Note deleted' : result.message,
-      isError: !result.success,
+      result.isSuccess
+          ? 'Note deleted'
+          : result.error ?? 'Failed to delete note',
+      isError: !result.isSuccess,
     );
   }
 
-  return result.success;
+  return result.isSuccess;
 }
 
 /// "5 Oct 2026" from a Supabase timestamp string.

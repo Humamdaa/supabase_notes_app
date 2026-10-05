@@ -133,10 +133,14 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
       final upload = await _data.uploadImage(_newImage!);
       final path = upload.data;
 
-      if (!upload.success || path == null) {
+      if (!upload.isSuccess || path == null) {
         if (!mounted) return;
         setState(() => _isSaving = false);
-        showAuthSnackBar(context, upload.message, isError: true);
+        showAuthSnackBar(
+          context,
+          upload.error ?? 'Failed to save note',
+          isError: true,
+        );
         return;
       }
 
@@ -158,7 +162,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
 
     setState(() => _isSaving = false);
 
-    if (result.success) {
+    if (result.isSuccess) {
       // Clean up the old image if it was replaced or removed
       if (_originalImagePath != null &&
           _originalImagePath!.isNotEmpty &&
@@ -171,7 +175,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     } else {
       // Saving failed: don't leave an orphan upload in storage
       if (uploadedPath != null) _data.deleteImage(uploadedPath);
-      showAuthSnackBar(context, result.message, isError: true);
+      showAuthSnackBar(context, result.error ?? 'Failed to save note', isError: true);
     }
   }
 

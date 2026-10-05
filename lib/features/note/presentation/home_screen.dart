@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/features/auth/presentation/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../features/notes/data/data_notes.dart';
-import '../widgets/note_helpers.dart';
-import 'login_screen.dart';
+import '../../../features/data/note/note_service.dart';
+import '../../../widgets/note_helper.dart';
+
 import 'note_detail_screen.dart';
 import 'note_editor_screen.dart';
 
@@ -42,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       _loading = false;
-      if (result.success) {
+      if (result.isSuccess) {
         _notes = result.data ?? [];
         _error = null;
       } else {
-        _error = result.message;
+        _error = result.error;
       }
     });
   }
