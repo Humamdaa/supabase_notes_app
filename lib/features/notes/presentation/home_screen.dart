@@ -8,6 +8,8 @@ import '../../../widgets/note_helper.dart';
 import 'note_detail_screen.dart';
 import 'note_editor_screen.dart';
 
+import 'dart:async';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -17,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _data = DataNotes();
+  StreamSubscription<List<Map<String, dynamic>>>? _notesSubscription;
 
   List<Map<String, dynamic>> _notes = [];
   bool _loading = true;
@@ -25,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _load();
+    // _load();
+    _listenToNotes();
   }
 
   // READ
@@ -52,22 +56,49 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _listenToNotes() {
+    try {
+      _notesSubscription = _data.watchNotes().listen(
+        (notes) {
+          if (!mounted) return;
+
+          setState(() {
+            _notes = notes;
+            _loading = false;
+            _error = null;
+          });
+        },
+        onError: (error) {
+          if (!mounted) return;
+
+          setState(() {
+            _loading = false;
+            _error = error.toString();
+          });
+        },
+      );
+    } catch (error) {
+      setState(() {
+        _loading = false;
+        _error = error.toString();
+      });
+    }
+  }
+
   // CREATE
   Future<void> _createNote() async {
-    final changed = await Navigator.push<bool>(
+    await Navigator.push<bool>(
       context,
       MaterialPageRoute(builder: (_) => const NoteEditorScreen()),
     );
-    if (changed == true) _load(showSpinner: false);
   }
 
   // READ one / UPDATE / DELETE happen from the detail page
   Future<void> _openNote(Map<String, dynamic> note) async {
-    final changed = await Navigator.push<bool>(
+    await Navigator.push<bool>(
       context,
       MaterialPageRoute(builder: (_) => NoteDetailScreen(note: note)),
     );
-    if (changed == true) _load(showSpinner: false);
   }
 
   Future<void> _logout() async {
@@ -78,6 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (_) => const LoginScreen()),
       (_) => false,
     );
+  }
+
+  @override
+  void dispose() {
+    _notesSubscription?.cancel();
+    super.dispose();
   }
 
   @override

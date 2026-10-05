@@ -36,7 +36,7 @@ class DataNotes {
   Future<Result<List<Map<String, dynamic>>>> read() {
     return safeCall<List<Map<String, dynamic>>>(() async {
       final user = supa.auth.currentUser;
-   
+
       if (user == null) {
         throw const AppException('Please log in first.');
       }
@@ -115,5 +115,20 @@ class DataNotes {
 
   String getImageUrl(String imagePath) {
     return supa.storage.from('notes').getPublicUrl(imagePath);
+  }
+
+//  read note in real time
+  Stream<List<Map<String, dynamic>>> watchNotes() {
+    final user = supa.auth.currentUser;
+
+    if (user == null) {
+      throw const AppException('Please log in first.');
+    }
+
+    return supa
+        .from('notes')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', user.id)
+        .order('created_at', ascending: false);
   }
 }
