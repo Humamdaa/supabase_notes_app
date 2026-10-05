@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../features/notes/data/data_notes.dart';
-import '../widgets/note_helpers.dart';
+import '../../../features/data/note/note_service.dart';
+import '../../../widgets/note_helper.dart';
 import 'note_editor_screen.dart';
 
 /// Read the full note. Edit and delete are actions in the app bar.
