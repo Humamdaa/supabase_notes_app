@@ -39,9 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final result = await _data.read();
 
-    debugPrint('READ SUCCESS: ${result.isSuccess}');
-    debugPrint('READ DATA: ${result.data}');
-    debugPrint('READ ERROR: ${result.error}');
     if (!mounted) return;
 
     setState(() {

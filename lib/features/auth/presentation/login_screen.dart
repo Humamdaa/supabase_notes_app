@@ -44,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         MaterialPageRoute(builder: (_) => const HomeScreen()),
       );
-      // TODO: Navigate to NotesScreen.
     } else {
       showAuthSnackBar(context, result.message, isError: true);
     }

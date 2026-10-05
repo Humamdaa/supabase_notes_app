@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/features/notes/presentation/home_screen.dart';
 
 import '../auth_service.dart';
 import '../../../widgets/auth_widgets.dart';
@@ -41,7 +42,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (result.success) {
       showAuthSnackBar(context, 'Account created successfully!');
 
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+
     } else {
       showAuthSnackBar(context, result.message, isError: true);
     }
