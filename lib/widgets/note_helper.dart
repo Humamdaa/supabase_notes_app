@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../features/notes/data/data_notes.dart';
+import '../features/data/note/note_service.dart';
 import 'auth_widgets.dart';
 
 /// Asks for confirmation, then deletes the note (and its image).
@@ -66,8 +66,18 @@ String formatNoteDate(dynamic value) {
   final date = DateTime.tryParse('$value')?.toLocal();
   if (date == null) return '';
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   return '${date.day} ${months[date.month - 1]} ${date.year}';
 }
