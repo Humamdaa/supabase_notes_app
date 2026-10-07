@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../features/data/note/note_service.dart';
+import '../features/notes/data/note/note_service.dart';
 import 'auth_widgets.dart';
 
 /// Asks for confirmation, then deletes the note (and its image).
 /// Returns true if the note was deleted.
 Future<bool> confirmAndDeleteNote(
   BuildContext context,
-  DataNotes data,
+  NoteService data,
   Map<String, dynamic> note,
 ) async {
   final scheme = Theme.of(context).colorScheme;

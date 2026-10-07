@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/note/note_service.dart';
+import '../data/note/note_service.dart';
 import '../../../widgets/note_helper.dart';
 import 'note_editor_screen.dart';
 
@@ -10,7 +10,7 @@ class NoteDetailScreen extends StatelessWidget {
   NoteDetailScreen({super.key, required this.note});
 
   final Map<String, dynamic> note;
-  final _data = DataNotes();
+  final _data = NoteService();
 
   // UPDATE
   Future<void> _edit(BuildContext context) async {

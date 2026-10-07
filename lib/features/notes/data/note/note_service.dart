@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:myapp/core/errors/app_exception.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../core/utils/safe_call.dart';
+import '../../../../core/utils/safe_call.dart';
 
 import 'package:uuid/uuid.dart';
 
-class DataNotes {
+class NoteService {
   final supa = Supabase.instance.client;
 
   // CREATE  (now accepts an optional image path)

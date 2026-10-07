@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../data/note/note_service.dart';
+import '../data/note/note_service.dart';
 import '../../../widgets/auth_widgets.dart';
 import '../../../widgets/note_helper.dart';
 
@@ -21,7 +21,7 @@ class NoteEditorScreen extends StatefulWidget {
 
 class _NoteEditorScreenState extends State<NoteEditorScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _data = DataNotes();
+  final _data = NoteService();
   final _picker = ImagePicker();
 
   late final TextEditingController _titleController;
@@ -175,7 +175,11 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     } else {
       // Saving failed: don't leave an orphan upload in storage
       if (uploadedPath != null) _data.deleteImage(uploadedPath);
-      showAuthSnackBar(context, result.error ?? 'Failed to save note', isError: true);
+      showAuthSnackBar(
+        context,
+        result.error ?? 'Failed to save note',
+        isError: true,
+      );
     }
   }
 

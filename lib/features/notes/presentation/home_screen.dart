@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myapp/features/auth/presentation/login_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../data/note/note_service.dart';
+import '../data/note/note_service.dart';
 import '../../../widgets/note_helper.dart';
 
 import 'note_detail_screen.dart';
@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _data = DataNotes();
+  final _data = NoteService();
   StreamSubscription<List<Map<String, dynamic>>>? _notesSubscription;
 
   List<Map<String, dynamic>> _notes = [];
@@ -215,7 +215,7 @@ class _NoteCard extends StatelessWidget {
   });
 
   final Map<String, dynamic> note;
-  final DataNotes data;
+  final NoteService data;
   final VoidCallback onTap;
 
   @override
