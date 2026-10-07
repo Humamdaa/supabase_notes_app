@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/features/auth/presentation/login_screen.dart';
+import 'package:myapp/features/notes/models/note.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data/note/note_service.dart';
@@ -19,9 +20,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _data = NoteService();
-  StreamSubscription<List<Map<String, dynamic>>>? _notesSubscription;
+  StreamSubscription<List<Note>>? _notesSubscription;
 
-  List<Map<String, dynamic>> _notes = [];
+  List<Note> _notes = [];
   bool _loading = true;
   String? _error;
 
@@ -94,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // READ one / UPDATE / DELETE happen from the detail page
-  Future<void> _openNote(Map<String, dynamic> note) async {
+  Future<void> _openNote(Note note) async {
     await Navigator.push<bool>(
       context,
       MaterialPageRoute(builder: (_) => NoteDetailScreen(note: note)),
@@ -182,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // DELETE (swipe)
           return Dismissible(
-            key: ValueKey(note['id']),
+            key: ValueKey(note.id),
             direction: DismissDirection.endToStart,
             confirmDismiss: (_) => confirmAndDeleteNote(context, _data, note),
             onDismissed: (_) => setState(() => _notes.removeAt(index)),
@@ -214,7 +215,7 @@ class _NoteCard extends StatelessWidget {
     required this.onTap,
   });
 
-  final Map<String, dynamic> note;
+  final Note note;
   final NoteService data;
   final VoidCallback onTap;
 
@@ -223,11 +224,11 @@ class _NoteCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final title = (note['title'] ?? '') as String;
-    final content = (note['content'] ?? '') as String;
-    final imagePath = note['image_path'] as String?;
+    final title = note.title;
+    final content = note.content;
+    final imagePath = note.imagePath;
     final hasImage = imagePath != null && imagePath.isNotEmpty;
-    final date = formatNoteDate(note['created_at']);
+    final date = formatNoteDate(note.createdAt);
 
     return Card(
       elevation: 0,

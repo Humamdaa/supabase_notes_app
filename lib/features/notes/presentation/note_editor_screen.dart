@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:myapp/features/notes/models/note.dart';
 
 import '../data/note/note_service.dart';
 import '../../../widgets/auth_widgets.dart';
@@ -13,7 +14,7 @@ import '../../../widgets/note_helper.dart';
 class NoteEditorScreen extends StatefulWidget {
   const NoteEditorScreen({super.key, this.note});
 
-  final Map<String, dynamic>? note;
+  final Note? note;
 
   @override
   State<NoteEditorScreen> createState() => _NoteEditorScreenState();
@@ -38,14 +39,13 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(
-      text: (widget.note?['title'] ?? '') as String,
-    );
+    _titleController = TextEditingController(text: widget.note?.title ?? '');
+
     _contentController = TextEditingController(
-      text: (widget.note?['content'] ?? '') as String,
+      text: widget.note?.content ?? '',
     );
-    _originalImagePath = widget.note?['image_path'] as String?;
-    _imagePath = _originalImagePath;
+
+    _originalImagePath = widget.note?.imagePath;
   }
 
   @override
@@ -151,7 +151,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     // 2) Save the note
     final result = _isEditing
         ? await _data.update(
-            widget.note!['id'].toString(),
+            widget.note!.id,
             title,
             content,
             imagePath: imagePath,

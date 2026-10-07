@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/features/notes/models/note.dart';
 
 import '../data/note/note_service.dart';
 import '../../../widgets/note_helper.dart';
@@ -9,7 +10,7 @@ import 'note_editor_screen.dart';
 class NoteDetailScreen extends StatelessWidget {
   NoteDetailScreen({super.key, required this.note});
 
-  final Map<String, dynamic> note;
+  final Note note;
   final _data = NoteService();
 
   // UPDATE
@@ -32,11 +33,11 @@ class NoteDetailScreen extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final title = (note['title'] ?? '') as String;
-    final content = (note['content'] ?? '') as String;
-    final imagePath = note['image_path'] as String?;
+    final title = note.title;
+    final content = note.content;
+    final imagePath = note.imagePath;
     final hasImage = imagePath != null && imagePath.isNotEmpty;
-    final date = formatNoteDate(note['created_at']);
+    final date = formatNoteDate(note.createdAt);
 
     return Scaffold(
       appBar: AppBar(

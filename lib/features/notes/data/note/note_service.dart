@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:myapp/core/errors/app_exception.dart';
+import 'package:myapp/features/notes/models/note.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/utils/safe_call.dart';
@@ -33,8 +34,8 @@ class NoteService {
   }
 
   // READ  (newest first)
-  Future<Result<List<Map<String, dynamic>>>> read() {
-    return safeCall<List<Map<String, dynamic>>>(() async {
+  Future<Result<List<Note>>> read() {
+    return safeCall<List<Note>>(() async {
       final user = supa.auth.currentUser;
 
       if (user == null) {
@@ -47,7 +48,7 @@ class NoteService {
           .eq('user_id', user.id)
           .order('created_at', ascending: false);
 
-      return notes;
+      return notes.map<Note>((map) => Note.fromMap(map)).toList();
     });
   }
 
@@ -117,8 +118,8 @@ class NoteService {
     return supa.storage.from('notes').getPublicUrl(imagePath);
   }
 
-//  read note in real time
-  Stream<List<Map<String, dynamic>>> watchNotes() {
+  //  read note in real time
+  Stream<List<Note>> watchNotes() {
     final user = supa.auth.currentUser;
 
     if (user == null) {
@@ -129,6 +130,7 @@ class NoteService {
         .from('notes')
         .stream(primaryKey: ['id'])
         .eq('user_id', user.id)
-        .order('created_at', ascending: false);
+        .order('created_at', ascending: false)
+        .map((rows) => rows.map<Note>((map) => Note.fromMap(map)).toList());
   }
 }

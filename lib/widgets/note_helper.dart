@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/features/notes/models/note.dart';
 
 import '../features/notes/data/note/note_service.dart';
 import 'auth_widgets.dart';
@@ -8,7 +9,7 @@ import 'auth_widgets.dart';
 Future<bool> confirmAndDeleteNote(
   BuildContext context,
   NoteService data,
-  Map<String, dynamic> note,
+  Note note,
 ) async {
   final scheme = Theme.of(context).colorScheme;
 
@@ -19,7 +20,7 @@ Future<bool> confirmAndDeleteNote(
       icon: Icon(Icons.delete_outline_rounded, color: scheme.error, size: 32),
       title: const Text('Delete note?'),
       content: Text(
-        '"${note['title'] ?? ''}" will be permanently deleted.',
+        '"${note.title ?? ''}" will be permanently deleted.',
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -41,10 +42,10 @@ Future<bool> confirmAndDeleteNote(
 
   if (confirmed != true) return false;
 
-  final result = await data.delete(note['id'].toString());
+  final result = await data.delete(note.id.toString());
 
   if (result.isSuccess) {
-    final imagePath = note['image_path'] as String?;
+    final imagePath = note.imagePath;
     if (imagePath != null && imagePath.isNotEmpty) {
       await data.deleteImage(imagePath); // best effort
     }
@@ -63,10 +64,9 @@ Future<bool> confirmAndDeleteNote(
   return result.isSuccess;
 }
 
-/// "5 Oct 2026" from a Supabase timestamp string.
-String formatNoteDate(dynamic value) {
-  final date = DateTime.tryParse('$value')?.toLocal();
-  if (date == null) return '';
+String formatNoteDate(DateTime value) {
+  final date = value.toLocal();
+
   const months = [
     'Jan',
     'Feb',
