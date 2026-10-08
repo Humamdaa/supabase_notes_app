@@ -20,7 +20,7 @@ Future<bool> confirmAndDeleteNote(
       icon: Icon(Icons.delete_outline_rounded, color: scheme.error, size: 32),
       title: const Text('Delete note?'),
       content: Text(
-        '"${note.title ?? ''}" will be permanently deleted.',
+        '"${note.title}" will be permanently deleted.',
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -42,7 +42,7 @@ Future<bool> confirmAndDeleteNote(
 
   if (confirmed != true) return false;
 
-  final result = await data.delete(note.id.toString());
+  final result = await data.delete(note.id);
 
   if (result.isSuccess) {
     final imagePath = note.imagePath;
